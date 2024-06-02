@@ -1,0 +1,3 @@
+com.wjc.thrift.annotaion.EnableThriftServer=\
+  com.wjc.thrift.ThriftServerAutoConfiguration,\
+  com.wjc.thrift.ThriftServerDiscoveryConfig

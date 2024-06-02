@@ -1,0 +1,32 @@
+server:
+  port: 8089
+
+spring:
+  application:
+    name: thrift-calculator-client
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        register: true
+        register-health-check: false
+        health-check-interval: 10s
+        health-check-path: /health
+        service-name: calculator-client-rest
+        instance-id: ${spring.cloud.consul.discovery.service-name}:${spring.cloud.consul.host}:${server.port}
+        prefer-ip-address: true
+      retry:
+        max-attempts: 3
+        max-interval: 2000
+  thrift:
+    client:
+      package-to-scan: com.wjc.thrift.client
+      service-model: hsHa
+      pool:
+        retry-times: 3
+        pool-max-total-per-key: 200
+        pool-min-idle-per-key: 10
+        pool-max-idle-per-key: 40
+        pool-max-wait: 1000
+        connect-timeout: 2000
