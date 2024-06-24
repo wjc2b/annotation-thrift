@@ -1,5 +1,7 @@
 package com.wjc.thrift.client.discovery;
 
+import com.ecwid.consul.v1.health.model.Check;
+import com.ecwid.consul.v1.health.model.HealthService;
 import com.orbitz.consul.model.health.HealthCheck;
 import com.orbitz.consul.model.health.Node;
 import com.orbitz.consul.model.health.Service;
@@ -25,9 +27,9 @@ public class ThriftConsulServerUtils {
     private ThriftConsulServerUtils() {
     }
 
-    public static String findHost(ServiceHealth serviceHealth) {
-        Service service = serviceHealth.getService();
-        Node node = serviceHealth.getNode();
+    public static String findHost(ServiceHealth healthService) {
+        Service service = healthService.getService();
+        Node node = healthService.getNode();
         if (StringUtils.hasText(service.getAddress())) {
             return fixIPv6Address(service.getAddress());
         } else {
@@ -45,13 +47,13 @@ public class ThriftConsulServerUtils {
         }
     }
 
-    public static List<String> getTags(ServiceHealth serviceHealth) {
-        return serviceHealth.getService().getTags();
+    public static List<String> getTags(HealthService healthService) {
+        return healthService.getService().getTags();
     }
 
 
-    public static boolean isPassingCheck(ServiceHealth serviceHealth) {
-        List<HealthCheck> healthChecks = serviceHealth.getChecks();
+    public static boolean isPassingCheck(ServiceHealth healthService) {
+        List<HealthCheck> healthChecks = healthService.getChecks();
         for (HealthCheck healthCheck : healthChecks) {
             if (!CHECK_STATUS_PASSING.equals(healthCheck.getStatus())) {
                 return false;
@@ -61,8 +63,8 @@ public class ThriftConsulServerUtils {
     }
 
 
-    public static Map<String, String> getMetadata(ServiceHealth serviceHealth) {
-        return getMetadata(serviceHealth.getService().getTags());
+    public static Map<String, String> getMetadata(HealthService healthService) {
+        return getMetadata(healthService.getService().getTags());
     }
 
     private static Map<String, String> getMetadata(List<String> tags) {

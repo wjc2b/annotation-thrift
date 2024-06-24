@@ -1,14 +1,19 @@
 package com.wjc.thrift.client.discovery;
 
+import com.ecwid.consul.v1.ConsulClient;
+import com.ecwid.consul.v1.QueryParams;
+import com.ecwid.consul.v1.health.model.HealthService;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+
 import com.orbitz.consul.CatalogClient;
 import com.orbitz.consul.Consul;
 import com.orbitz.consul.HealthClient;
 import com.orbitz.consul.async.ConsulResponseCallback;
 import com.orbitz.consul.model.ConsulResponse;
+import com.orbitz.consul.model.health.HealthCheck;
 import com.orbitz.consul.model.health.Node;
 import com.orbitz.consul.model.health.Service;
 import com.orbitz.consul.model.health.ServiceHealth;
@@ -35,15 +40,15 @@ import java.util.Map;
 public class ThriftConsulServerNodeList extends ThriftServerNodeList<ThriftConsulServerNode> {
 
     private final Consul consul;
-    private final HealthClient healthClient;
     private final CatalogClient catalogClient;
+    private final HealthClient healthClient;
 
     private static volatile ThriftConsulServerNodeList serverNodeList = null;
 
     private ThriftConsulServerNodeList(Consul consul) {
         this.consul = consul;
-        this.healthClient = this.consul.healthClient();
         this.catalogClient = this.consul.catalogClient();
+        this.healthClient = this.consul.healthClient();
     }
 
     public static ThriftConsulServerNodeList singleton(Consul consul){
@@ -67,10 +72,11 @@ public class ThriftConsulServerNodeList extends ThriftServerNodeList<ThriftConsu
     @Override
     public Map<String, LinkedHashSet<ThriftConsulServerNode>> refreshThriftServers() {
         // 返回Consul中的所有服务。QueryOptions.BLANK：默认查询行为。
-        Map<String, List<String>> catalogServiceMap = catalogClient.getServices(QueryOptions.BLANK).getResponse();
+        Map<String, List<String>> catalogServiceMap = this.catalogClient.getServices(QueryOptions.BLANK).getResponse();
         if (MapUtils.isEmpty(catalogServiceMap)){
             return this.serverNodeMap;
         }
+
         Map<String,LinkedHashSet<ThriftConsulServerNode>> serverNodeMap = Maps.newConcurrentMap();
         for(Map.Entry<String, List<String>> catalogServiceEntry: catalogServiceMap.entrySet()){
             String serviceName = catalogServiceEntry.getKey();
@@ -79,7 +85,7 @@ public class ThriftConsulServerNodeList extends ThriftServerNodeList<ThriftConsu
             if (CollectionUtils.isEmpty(tags)) {
                 continue;
             }
-            List<ServiceHealth> serviceHealthList = healthClient.getAllServiceInstances(serviceName).getResponse();
+            List<ServiceHealth> serviceHealthList = this.healthClient.getAllServiceInstances(serviceName).getResponse();
             LinkedHashSet<ThriftConsulServerNode> serverNodeSet = Sets.newLinkedHashSet();
             List<ThriftConsulServerNode> serverNodeList = Lists.newArrayList(serverNodeSet);
             // 通过遍历现有健康节点，来获得注册的ServerNode
@@ -100,7 +106,7 @@ public class ThriftConsulServerNodeList extends ThriftServerNodeList<ThriftConsu
     @Override
     public List<ThriftConsulServerNode> refreshThriftServers(String serviceName) {
         List<ThriftConsulServerNode> serverNodeList = Lists.newArrayList();
-        List<ServiceHealth> serviceHealthList = healthClient.getAllServiceInstances(serviceName).getResponse();
+        List<ServiceHealth> serviceHealthList = this.healthClient.getAllServiceInstances(serviceName).getResponse();
         filterAndCompoServerNodes(serverNodeList,serviceHealthList);
         if (CollectionUtils.isNotEmpty(serverNodeList)){
             this.serverNodeMap.put(serviceName,new LinkedHashSet<>(serverNodeList));
@@ -178,8 +184,8 @@ public class ThriftConsulServerNodeList extends ThriftServerNodeList<ThriftConsu
         @Override
         public void onComplete(ConsulResponse<List<ServiceHealth>> consulResponse) {
             List<ServiceHealth> response = consulResponse.getResponse();
-            for (ServiceHealth serviceHealth : response) {
-                ThriftConsulServerNode serverNode = getThriftConsulServerNode(serviceHealth);
+            for (ServiceHealth healthService : response) {
+                ThriftConsulServerNode serverNode = getThriftConsulServerNode(healthService);
                 serverNodeList.add(serverNode);
             }
         }

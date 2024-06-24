@@ -1,7 +1,6 @@
 package com.wjc.thrift.client.scanner;
 
 import com.wjc.thrift.client.common.ThriftServiceSignature;
-import jdk.management.resource.ResourceApprover;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;

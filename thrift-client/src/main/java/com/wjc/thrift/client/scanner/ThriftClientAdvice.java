@@ -78,9 +78,9 @@ public class ThriftClientAdvice implements MethodInterceptor {
         if (Objects.isNull(consul)) {
             throw new ThriftClientRegistryException("Unable to access consul server, address is: " + consul);
         }
-        ThriftConsulServerNodeList serverNodeList = ThriftConsulServerNodeList.singleton(consul);
+//        ThriftConsulServerNodeList serverNodeList = ThriftConsulServerNodeList.singleton(consul);
         IRule roundRobinRule = new RoundRobinRule();
-        this.loadBalancer = new ThriftConsulServerListLoadBalancer(serverNodeList,roundRobinRule);
+//        this.loadBalancer = new ThriftConsulServerListLoadBalancer(serverNodeList,roundRobinRule);
         roundRobinRule.setLoadBalancer(loadBalancer);
     }
 

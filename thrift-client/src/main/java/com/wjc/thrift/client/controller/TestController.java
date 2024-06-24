@@ -31,8 +31,6 @@ public class TestController {
 
     @GetMapping("/add")
     public int add(@RequestParam("arg1") int arg1, @RequestParam("arg2") int arg2) throws Exception {
-
-//        return calculator.client().add(arg1,arg2);
         return calcu.add(arg1,arg2);
     }
 

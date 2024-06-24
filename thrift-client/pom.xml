@@ -80,6 +80,10 @@
             <artifactId>thrift-iface</artifactId>
             <version>1.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.ecwid.consul</groupId>
+            <artifactId>consul-api</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
