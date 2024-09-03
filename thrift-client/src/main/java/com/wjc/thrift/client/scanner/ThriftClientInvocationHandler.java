@@ -39,11 +39,11 @@ import java.util.Objects;
 /**
  * @author wjc
  * @date 2024-04-16 14:26
- * @desription
+ * @desription JDK动态代理类。
  */public class ThriftClientInvocationHandler implements InvocationHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(ThriftClientInvocationHandler.class);
 
-     private ThriftServiceSignature serviceSignature;
+    private ThriftServiceSignature serviceSignature;
 
     private Class<?> clientClass;
     private Class<?> beanClass;
@@ -145,13 +145,12 @@ import java.util.Objects;
                 TProtocol protocol = new TCompactProtocol(transport);
                 TMultiplexedProtocol tMultiplexedProtocol = new TMultiplexedProtocol(protocol, signature);
                 Object client = clientConstructor.newInstance(tMultiplexedProtocol);
-                // 这有啥用？
-                Method cachedMethod = ThriftServiceMethodCacheManager.getMethod(client.getClass(),
-                        method.getName(),
-                        method.getParameterTypes());
+                // 方法缓存 暂时用不到
+//                Method cachedMethod = ThriftServiceMethodCacheManager.getMethod(client.getClass(),
+//                        method.getName(),
+//                        method.getParameterTypes());
                 // method, target, args
-                // 相当于尝试再target上调用方法method，args是方法的参数。
-                // 也就是建立了一个客户端连接，在连接调用方法method。
+                // 尝试在 target 上调用方法 method , args 是方法的参数。
                 return ReflectionUtils.invokeMethod(method, client, args);
             }catch (IllegalArgumentException | IllegalAccessException | InstantiationException | SecurityException | NoSuchMethodException e) {
                 throw new ThriftClientOpenException("Unable to open thrift client", e);
@@ -228,8 +227,6 @@ import java.util.Objects;
                 }
             }
         }
-//         如何调用Client中的method呢？
-
     }
 }
 

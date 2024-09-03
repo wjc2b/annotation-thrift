@@ -29,7 +29,7 @@ public class THsHaServerArgument extends THsHaServer.Args {
     private Map<String,ThriftServiceWrapper> processorMap = new HashMap<>();
     public THsHaServerArgument(List<ThriftServiceWrapper> serviceWrapperList, ThriftServerProperties properties) throws TTransportException {
         super(new TNonblockingServerSocket(properties.getPort()));
-        transportFactory(new TFastFramedTransport.Factory());
+        transportFactory(new TFastFramedTransport.Factory(1024,1024*1024*100));
         protocolFactory(new TCompactProtocol.Factory());
 
         // yml配置文件中读取的

@@ -4,10 +4,13 @@ import com.wjc.thrift.client.common.ThriftServerNode;
 import com.wjc.thrift.client.exception.ThriftClientConfigException;
 import com.wjc.thrift.client.properties.TServiceModel;
 import org.apache.thrift.transport.TFastFramedTransport;
+import org.apache.thrift.transport.TNonblockingSocket;
 import org.apache.thrift.transport.TSocket;
 import org.apache.thrift.transport.TTransport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
 
 /**
  * @author wjc
@@ -20,7 +23,7 @@ public class ThriftTransportFactory {
     private static final int CONNECT_TIMEOUT = 10;
 
     public static TTransport determineTTransport(String serviceModel, ThriftServerNode serverNode,
-                                                 int connectTimeout) {
+                                                 int connectTimeout) throws IOException {
         TTransport transport;
         switch (serviceModel){
             case TServiceModel.SERVICE_MODEL_SIMPLE:
@@ -38,7 +41,7 @@ public class ThriftTransportFactory {
         return transport;
     }
 
-    public static TTransport determineTTransport(String serviceModel, ThriftServerNode serverNode) {
+    public static TTransport determineTTransport(String serviceModel, ThriftServerNode serverNode) throws IOException {
         return determineTTransport(serviceModel, serverNode, CONNECT_TIMEOUT);
     }
 

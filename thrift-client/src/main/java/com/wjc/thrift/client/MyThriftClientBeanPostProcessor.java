@@ -64,7 +64,7 @@ public class MyThriftClientBeanPostProcessor implements BeanPostProcessor, Appli
 
         Class<?> targetClass = target.getClass();
         final Object targetBean = target;
-        // 动态地将实现了特定服务的bean注入到带有ThriftRefer注解的字段中。
+        // 动态地将实现了特定服务的bean注入到带有MyThriftClient注解的字段中。
         ReflectionUtils.doWithFields(targetClass,field -> {// 它允许我们对给定类中的每个字段（包括继承的字段）执行某些操作，相当于是字段的迭代器。
             // 在所有的字段中，找到用ThriftRefer注释的字段。
             MyThriftClient myThriftClient = AnnotationUtils.findAnnotation(field, MyThriftClient.class);

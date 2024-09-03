@@ -1,6 +1,7 @@
 package com.wjc.thrift.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -16,5 +17,10 @@ public class HealthController {
         // ...
 
         return "OK"; // 返回 "OK" 表示服务健康
+    }
+
+    @PostMapping("/uploadTest")
+    public String upLoadTest(){
+        return "";
     }
 }

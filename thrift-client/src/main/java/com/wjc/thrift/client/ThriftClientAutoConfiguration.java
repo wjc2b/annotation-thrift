@@ -7,12 +7,13 @@ import com.wjc.thrift.client.properties.ConsulPropertiesCondition;
 import com.wjc.thrift.client.properties.ThriftClientPoolProperties;
 import com.wjc.thrift.client.properties.ThriftClientProperties;
 import com.wjc.thrift.client.properties.ThriftClientPropertiesCondition;
-import com.wjc.thrift.client.scanner.MyThriftClientRegistrar;
+import com.wjc.thrift.client.scanner.MyThriftClientRegister;
 import com.wjc.thrift.client.scanner.ThriftClientBeanScanProcessor;
 import org.apache.commons.pool2.impl.GenericKeyedObjectPoolConfig;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 
@@ -23,6 +24,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @Conditional(value = {ConsulPropertiesCondition.class, ThriftClientPropertiesCondition.class})
+@ComponentScan({"com.wjc.thrift.client"})
 @EnableConfigurationProperties(ThriftClientProperties.class)
 public class ThriftClientAutoConfiguration {
 
@@ -33,8 +35,8 @@ public class ThriftClientAutoConfiguration {
      */
     @Bean
     @ConditionalOnMissingBean
-    public ThriftClientBeanScanProcessor thriftClientBeanScanProcessor(){
-        return new ThriftClientBeanScanProcessor();
+    public MyThriftClientRegister myThriftClientRegister(){
+        return new MyThriftClientRegister();
     }
 
     @Bean
@@ -69,7 +71,7 @@ public class ThriftClientAutoConfiguration {
     @Bean
 //    @ConditionalOnMissingBean
     public TransportKeyedPooledObjectFactory transportKeyedPooledObjectFactory(ThriftClientProperties properties){
-        System.out.println("TransportKeyedPooledObjectFactory finished" );
+//        System.out.println("TransportKeyedPooledObjectFactory finished" );
         return new TransportKeyedPooledObjectFactory(properties);
     }
 
@@ -77,27 +79,16 @@ public class ThriftClientAutoConfiguration {
     @ConditionalOnMissingBean
     public TransportKeyedObjectPool transportKeyedObjectPool(GenericKeyedObjectPoolConfig config,
                                                              TransportKeyedPooledObjectFactory poolFactory){
-        System.out.println("TransportKeyedObjectPool finished" );
+//        System.out.println("TransportKeyedObjectPool finished" );
         return new TransportKeyedObjectPool(poolFactory,config);
     }
 
-    /*
-    注入 ThriftClientBeanPostProcessor
-
-     */
-    @Bean
-    @ConditionalOnMissingBean
-    public ThriftClientBeanPostProcessor thriftClientBeanPostProcessor(){
-        ThriftClientBeanPostProcessor thriftClientBeanPostProcessor = new ThriftClientBeanPostProcessor();
-        System.out.println("ThriftClientBeanPostProcessor finished" );
-        return thriftClientBeanPostProcessor;
-    }
 
     @Bean
     @ConditionalOnMissingBean
     public ThriftClientContext thriftClientContext(
             ThriftClientProperties properties, TransportKeyedObjectPool objectPool) {
-        System.out.println("ThriftClientContext finished" );
+//        System.out.println("ThriftClientContext finished" );
         return ThriftClientContext.context(properties, objectPool);
     }
 
