@@ -67,7 +67,7 @@ public class ThriftServerAutoConfiguration implements ApplicationContextAware {
                 final Object targetBean = target;
                 TargetSource targetSource = ((Advised) target).getTargetSource();
                 try {
-                    target = targetSource.getTarget();  // ?没有用到啊?
+                    target = targetSource.getTarget();
                 } catch (Exception e) {
                     throw new ThriftServerException("Failed to get Target from"+target,e);
                 }

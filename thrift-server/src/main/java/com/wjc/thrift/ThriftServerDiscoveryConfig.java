@@ -46,8 +46,8 @@ public class ThriftServerDiscoveryConfig {
         LOGGER.info("Service discovery in host:{}, port:{}",discoveryHost,discoveryPort);
         String serverName = thriftServerProperties.getServerId();
         // 获得服务所在的地址和port
-        String serverHostAddress = discoveryProperties.getHost(); // 先注册到124上
-//        String serviceHostAddress = "localhost"; // 先注册到124上
+        String serverHostAddress = discoveryProperties.getHost();
+//        String serviceHostAddress = "localhost";
 //        String serviceHostAddress = Inet4Address.getLocalHost().getHostAddress();
         Integer serverHostPort = thriftServerProperties.getPort();
 
@@ -108,7 +108,7 @@ public class ThriftServerDiscoveryConfig {
             check.setTimeout(checkTimeout.toString()+"s");
 
             // HTTP: 需要在TServer上实现一个健康检查接口/health
-            // 里面可以自定义健康检查的逻辑。相对高端，但是怎么实现啊？
+            // 里面可以自定义健康检查的逻辑。
 //            check.setHttp(String.format(REGISTRY_URL_TEMPLATE,serviceHostAddress,serviceHostPort)+"/health");
 //            check.setInterval(checkInterval.toString()+"s");
 //            check.setTimeout(checkTimeout.toString()+"s");

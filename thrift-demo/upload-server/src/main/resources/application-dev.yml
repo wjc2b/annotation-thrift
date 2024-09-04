@@ -32,9 +32,9 @@ spring:
         register-health-check: true
         health-check-interval: 10s
         tags:
-          - calculator-8080
+          - upload-8090
           - http
         health-check-path: /health
-        service-name: thrift-calculator-rest-server
+        service-name: thrift-upload-server
         instance-id: ${spring.cloud.consul.discovery.service-name}:${spring.cloud.client.ipAddress}:${server.port}
         prefer-ip-address: true

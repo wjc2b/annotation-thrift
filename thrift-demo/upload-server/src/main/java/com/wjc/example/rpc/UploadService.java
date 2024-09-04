@@ -18,7 +18,6 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 @ThriftService(name = "thrift-upload-demo",version = 2.0)
 public class UploadService implements uploadDemo.Iface{
-    private static AtomicInteger a = new AtomicInteger(0);
     @Override
     public boolean upload(ByteBuffer file) throws TException, IOException {
         String filePath = "F:\\rpc_test\\getTest.txt";
