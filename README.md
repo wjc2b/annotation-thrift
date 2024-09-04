@@ -1,8 +1,6 @@
 
 ## 使用方法
-<video controls="controls" name="media">
-    <source src="./gif/use.mp4" type="video/mp4">
-</video>
+![use](./gif/tinywow_use_x264_63839165.gif)
 
 ### 1. 生成Thrift文件
 * 根据thrift idl的相关规则编写对应的service
@@ -172,9 +170,7 @@ public class TestController {
 
 
 ## 使用效果
-<video controls="controls" name="media">
-    <source src="./gif/result.mp4" type="video/mp4">
-</video>
+![use](./gif/tinywow_result_x264_63839001.gif)
 
 
 ## 项目用到了什么
