@@ -204,6 +204,8 @@ public class TestController {
 8. 利用`ScheduledThreadPoolExecutor`实现定时任务，定期扫描Consul上健康的服务。
 
 ## 最后
+对于Thrift架构的逻辑可以参考我的博客:
+https://www.cnblogs.com/cybersiren/p/18266128
 
 思路来源：https://github.com/ostenant/spring-cloud-starter-thrift
 
